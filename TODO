@@ -1,0 +1,8 @@
+Todo (in no specific order):
+	move all functions into class, as to remove the need to constantly
+	  pass the same hash around
+
+	move from json to yaml, to make the substitution table easier to work
+	  with.
+	
+	Make python file itself executable
