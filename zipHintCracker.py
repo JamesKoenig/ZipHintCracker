@@ -1,12 +1,23 @@
-import os
+from czipfile import ZipFile
 import json
-
-zipExecDir = "C:\\Program Files\\7-Zip"
+import os #for system("pause")
 
 #tests a password on a given zip file
-def testPwd(filepath, pwd):
-    return (os.system("7z t -p"+pwd+" "+filepath) == 0)
-	
+def testPwd(filepath, pwd, checkMethod=ZipFile.testzip):
+    z = ZipFile(filepath, "r")
+    z.setpassword(pwd)
+    try:
+        checkMethod(z)
+        #if no exception was raised, it was the right password
+        return True
+    except RuntimeError as err:
+        #if it's not the right password, intercept the runtime error
+        if err[0] == 'Bad password for file':
+            return False
+        #the runtime error was not one we expected, re-raise it
+        else:
+            raise 
+    
 #test all elements in a table (or iterateable ;))
 def testTable(filepath, table):
     for i in table:
@@ -25,9 +36,10 @@ def permHashFromFile(path):
 	
 def permuteCharacter(char, permHash):
 	if(char): #as long as we're not dealing with "" (empty string)
-		if(char.isalpha()):
+		if(char.isalpha()):  #yield both cases of any alphabetical character
 			yield char.upper()
 			yield char.lower()
+          #if the character is in the hash then run through all its members
 		if(type(permHash.get(char)) == list):
 			for perm in permHash.get(char):
 				yield perm
@@ -44,6 +56,6 @@ def permuteString(string, permHash):
 			yield permutation
 
 
-os.chdir(zipExecDir)
+#os.chdir(zipExecDir)
 print("program loaded, I hope you're in interactive mode")
 os.system("pause")
