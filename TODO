@@ -1,9 +1,9 @@
 Todo (in no specific order):
-	FIX FALSE POSITIVES ISSUE
-
 	move from json to yaml, to make the substitution table easier to work
 	  with.
 	
 	Make python file itself executable 
 		(ie. zipHintCracker.py <zipfile> <subFile>)
 
+	move from python's native ZipFile (crc-password-only) to something else
+	  (that isn't czipfile), to allow for type 99 (aes encrypted) archives

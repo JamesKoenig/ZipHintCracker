@@ -1,15 +1,14 @@
-from czipfile import ZipFile
+from zipfile import ZipFile
 import json
 import os #for system("pause")
 
-class zipHintCracker:
+class ZipHintCracker:
     def __init__(self, passCandidate, zipPath, hashPath):
         self.pwdHint       = passCandidate
         self.zipInfo       = ZipFile(zipPath, "r")
-        self.substitutions = self.loadPermutations(hashPath)       
+        self.substitutions = self.loadPermutations(hashPath)
     
     #tests a password on a given zip file
-    #FIXME: currently giving false positives, maybe switch libraries?
     def testPwd(self, pwd, checkMethod=ZipFile.testzip):
         self.zipInfo.setpassword(pwd)
         try:
@@ -32,9 +31,12 @@ class zipHintCracker:
                 print(i) #shows correct password for file
                 return i
         return False
+        
+    def testHint(self):
+        return self.testTable(self.permuteHint())
     
     #generate a hash from a json file of possible substitution
-    def loadPermutations(path):
+    def loadPermutations(self,path):
         permHash = {}
         with open(path) as f:
             permHash = json.load(f)
@@ -64,6 +66,9 @@ class zipHintCracker:
         else:
             for permutation in self.permuteCharacter(char):
                 yield permutation
+    
+    def permuteHint(self):
+        return self.permuteString(self.pwdHint)
 
 print("program loaded, I hope you're in interactive mode")
 os.system("pause")
