@@ -1,12 +1,12 @@
 from zipfile import ZipFile
-import json
+import json 
 import os #for system("pause")
 
 class ZipHintCracker:
     def __init__(self, passCandidate, zipPath, hashPath):
         self.pwdHint       = passCandidate
         self.zipInfo       = ZipFile(zipPath, "r")
-        self.substitutions = self.loadPermutations(hashPath)
+        self.loadPermutations(hashPath)
     
     #tests a password on a given zip file
     def testPwd(self, pwd, checkMethod=ZipFile.testzip):
@@ -35,12 +35,10 @@ class ZipHintCracker:
     def testHint(self):
         return self.testTable(self.permuteHint())
     
-    #generate a hash from a json file of possible substitution
+    #set up the hash from a json file of possible substitution
     def loadPermutations(self,path):
-        permHash = {}
         with open(path) as f:
-            permHash = json.load(f)
-        return permHash
+            self.permHash = json.load(f)
 
     #permute a given character based on a dictionary of known substitutions
     #   is a generator, so this function returns an iteratable object
