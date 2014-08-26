@@ -26,12 +26,11 @@ class ZipHintCracker:
     #test all elements in a table (or iterateable ;))
     def testTable(self,table):
         for i in table:
-            if self.testPwd(i):
-                print("***RESULT FOUND***")
-                print(i) #shows correct password for file
-                return i
-        return False
-        
+            if self.testPwd(i): #if it's the right password
+                return i		#return the password
+        return False			#otherwise return False
+    
+	#test the hint string
     def testHint(self):
         return self.testTable(self.permuteHint())
     
@@ -48,6 +47,9 @@ class ZipHintCracker:
                 yield char.upper()
                 yield char.lower()
           #if the character is in the hash then run through all its members
+	else:
+	    yield char
+
         if(type(self.substitutions.get(char)) == list):
             for perm in self.substitutions.get(char):
                 yield perm
