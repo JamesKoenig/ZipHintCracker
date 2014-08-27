@@ -10,14 +10,14 @@ class ZipHintCracker:
     
     #tests a password on a given zip file
     def testPwd(self, pwd, checkMethod=ZipFile.testzip):
-        self.zipInfo.setpassword(pwd)
+        self.zipInfo.setpassword(bytes(pwd,"utf-8"))
         try:
             checkMethod(self.zipInfo)
             #if no exception was raised, it was the right password
             return True
         except RuntimeError as err:
             #if it's not the right password, intercept the runtime error
-            if err[0] == 'Bad password for file':
+            if err.args[0] == 'Bad password for file':
                 return False
             #the runtime error was not one we expected, re-raise it
             else:
@@ -50,8 +50,8 @@ class ZipHintCracker:
         else:
             yield char
 
-        if(type(self.substitutions.get(char)) == list):
-            for perm in self.substitutions.get(char):
+        if(type(self.permHash.get(char)) == list):
+            for perm in self.permHash.get(char):
                 yield perm
 
     #permute a given string based on a dictionary of known substitutions
