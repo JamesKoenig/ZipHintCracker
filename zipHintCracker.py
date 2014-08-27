@@ -46,9 +46,9 @@ class ZipHintCracker:
             if(char.isalpha()):  #yield both cases of any alphabetical character
                 yield char.upper()
                 yield char.lower()
-          #if the character is in the hash then run through all its members
-	else:
-	    yield char
+        #if the character is in the hash then run through all its members
+        else:
+            yield char
 
         if(type(self.substitutions.get(char)) == list):
             for perm in self.substitutions.get(char):
